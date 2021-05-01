@@ -21,6 +21,7 @@ import InputComponent from './input.component'
 import { makeStyles } from '@material-ui/core/styles';
 import {  getRepos, getUserData } from '../github-api';
 import { NearMeSharp } from "@material-ui/icons";
+import Loading from "./loading.component";
 
 
 
@@ -71,6 +72,9 @@ const HomePage = (props) => {
   const [UserInput, setUserInput] = useState('');
   const [following, setFollowing] = useState('');
   const [reponame, setrepoName] = useState([]);
+  const [loading, setLoading] =useState(false);
+  const [helper, setHelper] =useState(true);
+
   
 
 
@@ -79,16 +83,30 @@ const HomePage = (props) => {
   
 
   function handleSubmit(event) {
-    event.preventDefault()
+    setLoading(false);
+
+    event.preventDefault();
+    setHelper(true);
+    setLoading(true);
 
     console.log(" event", UserInput);
 
   getUserData(UserInput)
    .then(res => {
      console.log(res);
+     setLoading(true);
      setData(res.user);
+     setHelper(false);
 
-   });
+     setUserInput("");
+
+
+   })
+   .catch(err => alert("User not found"),
+   setUserInput(""),
+   setLoading(false)
+
+   );
 
    getRepos(UserInput)
    .then(reponame => {
@@ -131,6 +149,7 @@ const HomePage = (props) => {
       <Container maxWidth="sm" className={classes.root} >
     <form onSubmit={handleSubmit} className={classes.form}>
           <input
+            value={UserInput}
             type="text"
             onChange={event => setUserInput(event.target.value)}
             placeholder="Please enter username"
@@ -140,6 +159,10 @@ const HomePage = (props) => {
           <button type="submit" className={classes.btn}>Enter</button>
         </form>
     {/* <InputComponent   className={classes.input} /> */}
+        
+        { loading && helper ? <Loading /> : ( helper ? 
+        <div>this is</div>
+        :
         <MyCard  
         name={name} 
         avatar_url={avatar_url} 
@@ -147,7 +170,10 @@ const HomePage = (props) => {
         followers={followers}
         following={following}
         reponame={reponame}/>
-      </Container>
+        )
+      }
+        
+        </Container>
     </React.Fragment>
   );
 }
