@@ -71,6 +71,9 @@ const HomePage = (props) => {
   const [followers, setFollowers] = useState('');
   const [UserInput, setUserInput] = useState('');
   const [following, setFollowing] = useState('');
+  const [location, setLocation] = useState('');
+  const [public_gists, setPublicGist] = useState('');
+
   const [reponame, setrepoName] = useState([]);
   const [loading, setLoading] =useState(false);
   const [helper, setHelper] =useState(true);
@@ -83,25 +86,27 @@ const HomePage = (props) => {
   
 
   function handleSubmit(event) {
-    setLoading(false);
+    // setLoading(false);
+    setLoading(true);
 
     event.preventDefault();
-    setHelper(true);
-    setLoading(true);
+    // setHelper(true);
 
     console.log(" event", UserInput);
 
   getUserData(UserInput)
    .then(res => {
      console.log(res);
-     setLoading(true);
      setData(res.user);
      setHelper(false);
-
+     
      setUserInput("");
-
-
-   })
+     
+     
+    },
+    setLoading(true),
+    setHelper(true)
+    )
    .catch(err => alert("User not found"),
    setUserInput(""),
    setLoading(false)
@@ -113,14 +118,10 @@ const HomePage = (props) => {
     console.log(reponame);
     setRepoData(reponame);
     setUserInput("");
+    setLoading(false);
+
    });
-   
-  //  axios.get(`https://api.github.com/users/${name}`).then(resp => {
-  //    // props.onSubmit(resp.data)
-  //    setData(resp)
-  //    console.log(resp)
-  //    setUsername('')
-  //  })
+ 
 }
 
    const setData = ({ 
@@ -129,12 +130,16 @@ const HomePage = (props) => {
      public_repos,
      followers,
      following,
+     location,
+     public_gists
     })=> {
      setUsername(name);
      setAvatar(avatar_url);
      setRepo(public_repos);
      setFollowers(followers);
      setFollowing(following);
+     setLocation(location);
+     setPublicGist(public_gists);
     }
     
     const setRepoData= (reponame)=>{
@@ -158,10 +163,9 @@ const HomePage = (props) => {
           />
           <button type="submit" className={classes.btn}>Enter</button>
         </form>
-    {/* <InputComponent   className={classes.input} /> */}
         
         { loading && helper ? <Loading /> : ( helper ? 
-        <div>this is</div>
+        <div></div>
         :
         <MyCard  
         name={name} 
@@ -169,7 +173,9 @@ const HomePage = (props) => {
         public_repos={public_repos}
         followers={followers}
         following={following}
-        reponame={reponame}/>
+        reponame={reponame}
+        location={location}
+        public_gists={public_gists}/>
         )
       }
         

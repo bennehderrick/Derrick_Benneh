@@ -71,16 +71,11 @@ export default function MyCard(props) {
   const classes = useStyles();
 
   //nested list
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(!open);
   };
-//   const [expanded, setExpanded] = React.useState(false);
-
-//   const handleExpandClick = () => {
-//     setExpanded(!expanded);
-//   };
 
   return (
     <Card className={classes.root}>
@@ -94,34 +89,14 @@ export default function MyCard(props) {
         title={props.name}
        
       />
-      <p></p>
+      <CardHeader
+      title={props.location}
+       />
       <CardMedia
         className={classes.media}
         image={props.avatar_url}
         title="Paella dish"
       />
-
-
-      {/* <List component="nav" aria-label="main mailbox folders">
-        <ListItem button>
-          <ListItemIcon>
-            <WorkIcon />
-          </ListItemIcon>
-          <ListItemText primary={`Repos - ${props.public_repos}`} />
-        </ListItem>
-        <Divider />
-        <ListItem button>
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary={`Followers - ${props.followers}`}/>
-        </ListItem>
-      </List>
-      <Divider />
-
-     */}
-
-
 
 <List
       component="nav"
@@ -138,6 +113,12 @@ export default function MyCard(props) {
           <WorkIcon />
         </ListItemIcon>
         <ListItemText primary={`following - ${props.following}`} />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <WorkIcon />
+        </ListItemIcon>
+        <ListItemText primary={`public gists - ${props.public_gists}`} />
       </ListItem>
       <ListItem button>
         <ListItemIcon>
@@ -168,11 +149,6 @@ export default function MyCard(props) {
         </List>
       </Collapse>
     </List>
-      
-    
-
-
-    
        
     </Card>
   );
